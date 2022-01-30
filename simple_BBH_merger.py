@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 import scipy
 import scipy.signal
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ def fmerger(M):
     c = 3*10**8
     G = 6.674*10**(-11)
     R = 1.7
-    freq = (2*c**3)/(R**(3/2)*G*M*1.989*10**30)
+    freq = (2*c**3)/(R**(3/2)*G*M*1.989*10**30)/(2*np.pi)
 
     return freq
 
@@ -45,3 +45,5 @@ plt.ylabel(r'Merger Frequency $F_m$ (Hz)')
 plt.show()
 
 print(ranges)
+
+# Question 3: 
