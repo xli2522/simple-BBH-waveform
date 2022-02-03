@@ -1,0 +1,14 @@
+# now we do a linear fit 
+import lmfit
+
+def freq_model(M_c, t, tc):
+    t = np.linspace(0, t, 100)
+    tau = tc - t
+    c = 3*10**8           # speed of light
+    G = 6.674*10**(-11)   # gravitational constant
+    freq = (8*np.pi)**(8/3)/5*((G*M_c*1.989*10**30)/c**3)**(5/3)*(tau)
+
+    return freq
+freq = freq_model(37, 0.5)
+p = lmfit.Parameters()
+p.add_many(('M_c', 1), ('t'))
