@@ -1,0 +1,74 @@
+# Here we do a linear fit
+# Kito
+#Using least squares approximation
+#IF_hdata = [11, 14, 17, 22, 26, 30]
+#IF_ldata = [10, 3, 17, 22, 25, 31, 34, 38, 42]
+x_Mean = 0; y_hMean = 0; y_lMean = 0
+sumNumL = 0; sumDenL = 0; sumNumH = 0; sumDenH = 0
+squaresL = [0]*len(IF_ldata); squaresH = [0]*len(IF_hdata)
+for i in range(len(IF_hdata)):
+    x_Mean += i
+    y_hMean += IF_hdata[i]
+x_Mean = x_Mean/len(IF_hdata)
+y_hMean = y_hMean/len(IF_hdata)
+for i in range(len(IF_hdata)):
+    sumNumH += (i - x_Mean)*(IF_hdata[i] - y_hMean)
+    sumDenH += (i - x_Mean)**2
+    
+mh = sumNumH/sumDenH
+ch = y_hMean - mh*x_Mean
+
+for i in range(len(IF_ldata)):
+    x_Mean += i
+    y_lMean += IF_ldata[i]
+x_Mean = x_Mean/len(IF_ldata)
+y_lMean = y_lMean/len(IF_ldata)
+for i in range(len(IF_ldata)):
+    sumNumL += (i - x_Mean)*(IF_ldata[i] - y_lMean)
+    sumDenL += (i - x_Mean)**2
+    
+ml = sumNumL/sumDenL
+cl = y_lMean - ml*x_Mean
+
+#Plot and print lines of best fit 
+for i in range(len(IF_ldata)):
+    squaresL[i] = ml*i + cl
+for i in range(len(IF_hdata)):
+    squaresH[i] = mh*i + ch
+   
+ 
+print (mh, ch, ml, cl)
+plt.plot(np.linspace(0.35, 0.43, len(IF_hdata)),squaresH)
+plt.plot(np.linspace(0.35, 0.43, len(IF_ldata)),squaresL)
+plt.scatter(np.linspace(0.35, 0.43, len(IF_ldata)),IF_ldata)
+plt.scatter(np.linspace(0.35, 0.43, len(IF_hdata)),IF_hdata)
+
+
+
+# Finding Chirp Mass values
+G = 6.674*10**(-11); c = 3*10**8
+mChirpH1 = [0]*len(IF_hdata)
+
+for i in range(len(IF_hdata)):
+    mChirpH1[i] = G * (((5*c**5)*(IF_hdata[i]/10**5))/((8*np.pi)**(8/3))*(8-(i*8/len(IF_hdata))))**(3/5)
+print (mChirpH1)
+
+mChirpH2 = [0]*len(IF_hdata)
+
+for i in range(len(IF_hdata)):
+    mChirpH2[i] = (((c**3)/G) * (((5/96)**3)*(mh**3)/((np.pi**8)*(IF_hdata[i]/10**5)**(41/3))))**(1/5)
+print (mChirpH2)
+
+
+mChirpL1 = [0]*len(IF_ldata)
+
+for i in range(len(IF_ldata)):
+    mChirpL1[i] = G * (((5*c**5)*(IF_ldata[i]/10**5))/((8*np.pi)**(8/3))*(8-(i*8/len(IF_ldata))))**(3/5)
+print (mChirpL1)
+
+mChirpL2 = [0]*len(IF_ldata)
+
+for i in range(len(IF_ldata)):
+    mChirpL2[i] = (((c**3)/G) * (((5/96)**3)*(ml**3)/((np.pi**8)*(IF_ldata[i]/10**5)**(41/3))))**(1/5)
+print (mChirpL2)
+
